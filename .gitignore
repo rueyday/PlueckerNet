@@ -1,6 +1,6 @@
 __pycache__/
 *.pyc
-# data and checkpoints (scalar/fetch_data.sh fetches the authors' dataset and weights)
+# data and checkpoints (evaluation/fetch_data.sh fetches the authors' dataset and weights)
 dataset/*_train
 dataset/*_valid
 output/*/

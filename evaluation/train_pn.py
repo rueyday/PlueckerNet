@@ -110,8 +110,8 @@ def main():
                     help="extra rotation of cloud 2: angle uniform in [0, max] about a random axis (0 = theirs only)")
     ap.add_argument("--canon", type=int, default=1, help="hemisphere sign canon on both clouds after the rotation")
     ap.add_argument("--epoch_mult", type=int, default=1, help="visits of each pair per epoch, each freshly augmented")
-    # their recipe (main_train.py / config.py); 600 epochs: their x0.99/epoch LR is 2.4e-6 by then
-    ap.add_argument("--epochs", type=int, default=600)
+    # their recipe (main_train.py / config.py); 400 epochs: their x0.99/epoch LR is 1.8e-5 by then
+    ap.add_argument("--epochs", type=int, default=400)
     ap.add_argument("--batch", type=int, default=12)
     ap.add_argument("--lr", type=float, default=1e-3)
     ap.add_argument("--workers", type=int, default=6)

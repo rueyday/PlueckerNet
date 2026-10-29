@@ -12,7 +12,6 @@ import numpy as np
 import torch
 
 PN = Path(__file__).resolve().parents[1]          # this fork's root
-SCALAR = PN.parents[1]                             # checked out at SCALAR/third_party/PlueckerNet
 WEIGHTS = {"outdoor": PN / "output/semantic3D/preTrained/best_val_checkpoint.pth"}   # their pretrained Semantic3D
 
 
