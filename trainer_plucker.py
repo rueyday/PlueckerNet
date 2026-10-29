@@ -25,7 +25,7 @@ class PluckerTrainer:
     self.model = Model(config)
 
     if config.weights:
-      checkpoint = torch.load(config.weights)
+      checkpoint = torch.load(config.weights, weights_only=False)
       self.model.load_state_dict(checkpoint['state_dict'])
 
     logging.info(self.model)
@@ -77,7 +77,7 @@ class PluckerTrainer:
     if config.resume is not None:
       if osp.isfile(config.resume):
         logging.info("=> loading checkpoint '{}'".format(config.resume))
-        state = torch.load(config.resume)
+        state = torch.load(config.resume, weights_only=False)
         self.start_epoch = state['epoch']
         self.model.load_state_dict(state['state_dict'])
         self.scheduler.load_state_dict(state['scheduler'])
@@ -168,7 +168,7 @@ class PluckerTrainer:
         # Caffe iter size
         data_timer.tic()
 
-        matches, plucker1, plucker2, R_gt, t_gt = data_loader_iter.next()
+        matches, plucker1, plucker2, R_gt, t_gt = next(data_loader_iter)
 
         data_time += data_timer.toc(average=False)
 
@@ -237,7 +237,7 @@ class PluckerTrainer:
 
 
       data_timer.tic()
-      matches, plucker1, plucker2, R_gt, t_gt = data_loader_iter.next()
+      matches, plucker1, plucker2, R_gt, t_gt = next(data_loader_iter)
       data_timer.toc()
 
       nb_plucker = matches.size(1)
@@ -257,7 +257,7 @@ class PluckerTrainer:
 
       _, P_topk_i = torch.topk(prob_matrix.flatten(start_dim=-2), k=k, dim=-1, largest=True, sorted=True)
 
-      plucker1_indices = P_topk_i / prob_matrix.size(-1)  # bxk (integer division)
+      plucker1_indices = P_topk_i // prob_matrix.size(-1)  # bxk (integer division)
       plucker2_indices = P_topk_i % prob_matrix.size(-1)  # bxk
 
       # in case cannot be estimated

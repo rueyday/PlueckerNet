@@ -20,7 +20,7 @@ def get_graph_feature(x, k=10, idx=None):
     x = x.view(batch_size, -1, num_points)
     if idx is None:
         idx = knn(x, k=min(k,num_points))  # (batch_size, num_points, k)
-    device = torch.device('cuda')
+    device = x.device
 
     nb_knns = idx.size(-1)
 

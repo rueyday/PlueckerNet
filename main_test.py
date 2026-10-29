@@ -85,7 +85,7 @@ def main(config):
 
         # load the weights
         if config.weights:
-            checkpoint = torch.load(config.weights)
+            checkpoint = torch.load(config.weights, weights_only=False)
             model.load_state_dict(checkpoint['state_dict'])
 
         logging.info(model)
@@ -109,7 +109,7 @@ def main(config):
         for batch_idx in range(tot_num_data):
 
             data_timer.tic()
-            matches, plucker1, plucker2, R_gt, t_gt = data_loader_iter.next()
+            matches, plucker1, plucker2, R_gt, t_gt = next(data_loader_iter)
             data_timer.toc()
 
             nb_plucker = matches.size(1)
@@ -130,7 +130,7 @@ def main(config):
             k = min(200, round(plucker1.size(1) * plucker2.size(1)))
             _, P_topk_i = torch.topk(prob_matrix.flatten(start_dim=-2), k=k, dim=-1, largest=True, sorted=True)
 
-            plucker1_indices = P_topk_i / prob_matrix.size(-1)  # bxk (integer division)
+            plucker1_indices = P_topk_i // prob_matrix.size(-1)  # bxk (integer division)
             plucker2_indices = P_topk_i % prob_matrix.size(-1)  # bxk
 
             # in case cannot be estimated
